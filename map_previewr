@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>My Box HTML Previewer</title>
+    <link rel="stylesheet" href="https://cdn01.boxcdn.net/platform/preview/2.101.0/en-US/preview.css" />
+    <script src="https://cdn01.boxcdn.net/platform/preview/2.101.0/en-US/preview.js"></script>
+</head>
+<body>
+    <div id="preview-container" style="height: 800px; width: 100%;"></div>
+
+    <script>
+        // Αντικαταστήστε με το ID του αρχείου σας και το Token σας
+        var fileId = '2139146396875';
+        var token = 'vVxFyzRy99SW9Vp3Tuy4GT2aJlt27IUW';
+
+        var contentPreview = new Box.ContentPreview();
+        contentPreview.show(fileId, token, {
+            container: '#preview-container',
+            showDownload: true
+        });
+    </script>
+</body>
+</html>

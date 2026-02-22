@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-        __Αρχική__
+        __Αρχική__1
 </BR>    
 
     
@@ -26,35 +26,62 @@
     <script>
      window.onload = function() 
      {
+          document.getElementById("error-message").innerHTML = "<h2>__1__</h2>";
          // Έλεγχος αν η βιβλιοθήκη Box φορτώθηκε σωστά
          if (typeof Box === 'undefined' || !Box.ContentPreview) {
              showCustomError("Η βιβλιοθήκη της Box δεν φορτώθηκε. Ελέγξτε τη σύνδεσή σας ή τα links στο head.");
              return;
          }
+          
+          document.getElementById("error-message").innerHTML = "<h2>__2__</h2>";
          const urlParams = new URLSearchParams(window.location.search);
+          
+          document.getElementById("error-message").innerHTML = "<h2>__3__</h2>";
          const fileId = urlParams.get('id');
+          
+          document.getElementById("error-message").innerHTML = "<h2>__4__</h2>";
          const accessToken = 'Redcac57CPg17uio497IZhsCMTvDEV8I';
+          
+          document.getElementById("error-message").innerHTML = "<h2>__5__</h2>";
          const errorDiv = document.getElementById('error-message');
+          
+          document.getElementById("error-message").innerHTML = "<h2>__6__</h2>";
          if (!fileId) 
          {
              showCustomError("Δεν βρέθηκε File ID στο URL.");
+              
+          document.getElementById("error-message").innerHTML = "<h2>__7__</h2>";
          } 
          else 
          {
              try 
              {
-                 var contentPreview = new Box.ContentPreview();            
+                  
+          document.getElementById("error-message").innerHTML = "<h2>__8__</h2>";
+                 var contentPreview = new Box.ContentPreview();  
+                  
+          document.getElementById("error-message").innerHTML = "<h2>__9__</h2>";
                  contentPreview.addListener('error', (error) => {
+                      
+          document.getElementById("error-message").innerHTML = "<h2>__10__</h2>";
                      showCustomError("Σφάλμα Box: " + error.message);
                  });
+                  
+          document.getElementById("error-message").innerHTML = "<h2>__11__</h2>";
                  contentPreview.show(fileId, accessToken, {
                      container: '#preview-container',
                      showDownload: true
                  });
+                  
+          document.getElementById("error-message").innerHTML = "<h2>__12__</h2>";
              } 
              catch (e) 
              {
+                  
+          document.getElementById("error-message").innerHTML = "<h2>__13__</h2>";
                  showCustomError("Αποτυχία αρχικοποίησης Previewer: " + e.message);
+                  
+          document.getElementById("error-message").innerHTML = "<h2>__14__</h2>";
              }
          }
      };         

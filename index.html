@@ -1,117 +1,56 @@
-     <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="el">
 <head>
     <meta charset="utf-8" />
-    <title>Box HTML Previewer</title>
+    <title>Box HTML Previewer | Μελέτες Οδικής Ασφάλειας</title>
+    
     <link rel="stylesheet" href="https://cdn01.boxcdn.net/platform/preview/2.101.0/en-US/preview.css" />
     <script src="https://cdn01.boxcdn.net/platform/preview/2.101.0/en-US/preview.js"></script>
+
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-        #preview-container { height: 100vh; width: 100vw; }
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100%; 
+            width: 100%; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        #preview-container { 
+            height: 100vh; 
+            width: 100vw; 
+        }
+        #error-message { 
+            display: none; 
+            padding: 20px; 
+            margin: 20px; 
+            border-left: 5px solid #d8000c; 
+            background-color: #ffe8e8; 
+            color: #d8000c;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .loading-info {
+            padding: 10px;
+            color: #666;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
-        __Αρχική__1
-</BR>    
 
-    
-
-     <div id="error-message"></div>
-     <script>
-     document.getElementById("error-message").innerHTML = "<h2>Hello World</h2>";
-     </script>
-     </BR>        
-         <div id="preview-container">pppp</div>
+    <div id="error-message"></div>
+    <div id="preview-container">
+        <div class="loading-info">Αναμονή για φόρτωση βιβλιοθήκης Box...</div>
+    </div>
 
     <script>
+        // Η window.onload διασφαλίζει ότι θα έχουν φορτωθεί τα πάντα (JS/CSS) πριν ξεκινήσει ο κώδικας
+        window.onload = function() {
+            const errorDiv = document.getElementById('error-message');
+            const previewContainer = document.getElementById('preview-container');
 
-
-
-
-
-         
-     window.onload = function() 
-     {
-          document.getElementById("error-message").innerHTML = "<h2>__1__</h2>";
-         // Έλεγχος αν η βιβλιοθήκη Box φορτώθηκε σωστά
-         if (typeof Box === 'undefined' || !Box.ContentPreview) {
-          document.getElementById("error-message").innerHTML = "<h2>__1.1__</h2>";
-             showCustomError("Η βιβλιοθήκη της Box δεν φορτώθηκε. Ελέγξτε τη σύνδεσή σας ή τα links στο head.");
-             return;
-         }
-          
-          document.getElementById("error-message").innerHTML = "<h2>__2__</h2>";
-         const urlParams = new URLSearchParams(window.location.search);
-          
-          document.getElementById("error-message").innerHTML = "<h2>__3__</h2>";
-         const fileId = urlParams.get('id');
-          
-          document.getElementById("error-message").innerHTML = "<h2>__4__</h2>";
-         const accessToken = 'Redcac57CPg17uio497IZhsCMTvDEV8I';
-          
-          document.getElementById("error-message").innerHTML = "<h2>__5__</h2>";
-         const errorDiv = document.getElementById('error-message');
-          
-          document.getElementById("error-message").innerHTML = "<h2>__6__</h2>";
-         if (!fileId) 
-         {
-             showCustomError("Δεν βρέθηκε File ID στο URL.");
-              
-          document.getElementById("error-message").innerHTML = "<h2>__7__</h2>";
-         } 
-         else 
-         {
-             try 
-             {
-                  
-          document.getElementById("error-message").innerHTML = "<h2>__8__</h2>";
-                 var contentPreview = new Box.ContentPreview();  
-                  
-          document.getElementById("error-message").innerHTML = "<h2>__9__</h2>";
-                 contentPreview.addListener('error', (error) => {
-                      
-          document.getElementById("error-message").innerHTML = "<h2>__10__</h2>";
-                     showCustomError("Σφάλμα Box: " + error.message);
-                 });
-                  
-          document.getElementById("error-message").innerHTML = "<h2>__11__</h2>";
-                 contentPreview.show(fileId, accessToken, {
-                     container: '#preview-container',
-                     showDownload: true
-                 });
-                  
-          document.getElementById("error-message").innerHTML = "<h2>__12__</h2>";
-             } 
-             catch (e) 
-             {
-                  
-          document.getElementById("error-message").innerHTML = "<h2>__13__</h2>";
-                 showCustomError("Αποτυχία αρχικοποίησης Previewer: " + e.message);
-                  
-          document.getElementById("error-message").innerHTML = "<h2>__14__</h2>";
-             }
-         }
-     };       
-
-
-
-function showCustomError(msg) {
-          document.getElementById("error-message").innerHTML = "<h2>__1.2__</h2>";
-            errorDiv.style.display = 'block';
-            errorDiv.innerHTML = '<strong>Σφάλμα:</strong> ' + msg;
-          document.getElementById("error-message").innerHTML = "<h2>__1.3__</h2>";
-        }
-
-
-
-         
-    </script>
-
-
-   
-     
-        ___Τέλος___
-</body>
-</html>
-
-
+            function showCustomError(msg) {
+                previewContainer.style.display = 'none';
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = '<strong>⚠️ Προσοχή:</strong> ' + msg;
+            }

@@ -52,7 +52,8 @@ __2__
 document.getElementById("error-message").innerHTML = accessToken + " | " + fileId + " 3 " ;
 
              
-            var contentPreview = new Box.ContentPreview();    
+            var contentPreview = new Box.ContentPreview();   
+document.getElementById("error-message").innerHTML = accessToken + " | " + fileId + " 5 " ; 
             // Προσθήκη "Listener" για σφάλματα
             contentPreview.addListener('error', (error) => {
                 console.error(error);

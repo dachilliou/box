@@ -50,7 +50,8 @@ __2__
             showCustomError("Το Access Token δεν έχει οριστεί στον κώδικα.");
         } else {
             var contentPreview = new Box.ContentPreview();
-            
+           document.getElementById("error-message").innerHTML = accessToken + " | " + fileId + " 3 " ;
+      
             // Προσθήκη "Listener" για σφάλματα
             contentPreview.addListener('error', (error) => {
                 console.error(error);

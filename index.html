@@ -2,111 +2,75 @@
 <html lang="el">
 <head>
     <meta charset="utf-8" />
-    <title>2 | Box HTML Previewer </title>
+    <title>1 | Box HTML Previewer</title>
     
-<link rel="stylesheet" href="https://cdn01.boxcdn.net/platform/preview/2.102.0/en-US/preview.css" />
-<script src="https://cdn01.boxcdn.net/platform/preview/2.102.0/en-US/preview.js"></script>
+    <link rel="stylesheet" href="https://cdn01.boxcdn.net/platform/preview/2.102.0/en-US/preview.css" />
+    <script src="https://cdn01.boxcdn.net/platform/preview/2.102.0/en-US/preview.js"></script>
 
     <style>
-        body, html { 
-            margin: 0; 
-            padding: 0; 
-            height: 100%; 
-            width: 100%; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f5f5;
-        }
-        #preview-container { 
-            height: 100vh; 
-            width: 100vw; 
-        }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background-color: #f5f5f5; font-family: sans-serif; }
+        #preview-container { height: 100vh; width: 100vw; }
         #error-message { 
             display: none; 
             padding: 20px; 
             margin: 20px; 
             border-left: 5px solid #d8000c; 
             background-color: #ffe8e8; 
-            color: #d8000c;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .loading-info {
-            padding: 10px;
-            color: #666;
-            font-size: 0.9em;
+            color: #d8000c; 
         }
     </style>
 </head>
 <body>
 
     <div id="error-message"></div>
-    <div id="preview-container">
-        <div class="loading-info">Αναμονή για φόρτωση βιβλιοθήκης Box...</div>
-    </div>
+    <div id="preview-container"></div>
 
     <script>
-        // Η window.onload διασφαλίζει ότι θα έχουν φορτωθεί τα πάντα (JS/CSS) πριν ξεκινήσει ο κώδικας
-        window.onload = function() {
+        // Χρησιμοποιούμε μια μικρή καθυστέρηση για να δώσουμε χρόνο στη βιβλιοθήκη
+        function startPreview() {
             const errorDiv = document.getElementById('error-message');
-            const previewContainer = document.getElementById('preview-container');
-
-            function showCustomError(msg) {
-                previewContainer.style.display = 'none';
-                errorDiv.style.display = 'block';
-                errorDiv.innerHTML = '<strong>⚠️ Προσοχή:</strong> ' + msg;
-            }
-
-            // 1. Έλεγχος αν φορτώθηκε η βιβλιοθήκη Box
-            if (typeof Box === 'undefined' || !Box.ContentPreview) {
-                showCustomError("Η βιβλιοθήκη της Box δεν μπόρεσε να φορτωθεί. Ελέγξτε αν έχετε ad-blocker ή αν υπάρχει πρόβλημα με τη σύνδεση στο cdn01.boxcdn.net.");
-                return;
-            }
-
-            // 2. Λήψη παραμέτρων από το URL
             const urlParams = new URLSearchParams(window.location.search);
             const fileId = urlParams.get('id');
             
-            // --- ΡΥΘΜΙΣΗ TOKEN ---
-            // Αντικαταστήστε το 'YOUR_TOKEN' με το Developer Token από το Box Console
-            const accessToken = 'Redcac57CPg17uio497IZhsCMTvDEV8I'; 
+            // ΠΡΟΣΟΧΗ: Βάλτε εδώ το ενεργό Developer Token σας
+            const accessToken = 'YOUR_TOKEN'; 
 
-            // 3. Βασικοί έλεγχοι πριν την αρχικοποίηση
-            if (!fileId) {
-                showCustomError("Δεν ορίστηκε File ID. Παρακαλώ προσθέστε στο URL: <code>?id=123456789</code>");
-                return;
+            function showCustomError(msg) {
+                errorDiv.style.display = 'block';
+                errorDiv.innerHTML = '<strong>⚠️ Σφάλμα:</strong> ' + msg;
             }
 
-            if (accessToken === 'YOUR_TOKEN' || accessToken === '') {
-                showCustomError("Δεν έχει οριστεί το Access Token στον κώδικα. Πηγαίνετε στο Box Developer Console και αντιγράψτε ένα Developer Token.");
-                return;
-            }
+            // Έλεγχος αν η βιβλιοθήκη είναι έτοιμη
+            if (window.Box && window.Box.ContentPreview) {
+                if (!fileId) {
+                    showCustomError("Λείπει το ID αρχείου από το URL (?id=...)");
+                    return;
+                }
 
-            // 4. Δημιουργία και εμφάνιση του Preview
-            try {
-                var contentPreview = new Box.ContentPreview();
-                
-                // Προσθήκη Listener για σφάλματα κατά τη διάρκεια του Preview
-                contentPreview.addListener('error', (error) => {
-                    console.error("Box Preview Error:", error);
-                    if (error.type === 'file_not_found') {
-                        showCustomError("Το αρχείο δεν βρέθηκε. Βεβαιωθείτε ότι το ID <strong>" + fileId + "</strong> είναι σωστό.");
-                    } else if (error.type === 'unauthorized') {
-                        showCustomError("Το Access Token έληξε ή είναι άκυρο. Παρακαλώ ανανεώστε το από το Box Console.");
-                    } else {
+                try {
+                    var contentPreview = new Box.ContentPreview();
+                    
+                    contentPreview.addListener('error', (error) => {
                         showCustomError("Σφάλμα Box: " + error.message);
-                    }
-                });
+                    });
 
-                // Εκκίνηση προβολής
-                contentPreview.show(fileId, accessToken, {
-                    container: '#preview-container',
-                    showDownload: true,
-                    header: 'light'
-                });
-
-            } catch (err) {
-                showCustomError("Αποτυχία συστήματος: " + err.message);
+                    contentPreview.show(fileId, accessToken, {
+                        container: '#preview-container',
+                        showDownload: true
+                    });
+                } catch (e) {
+                    showCustomError("Αποτυχία έναρξης: " + e.message);
+                }
+            } else {
+                showCustomError("Η βιβλιοθήκη Box δεν είναι διαθέσιμη. Δοκιμάστε ανανέωση (F5).");
             }
-        };
+        }
+
+        // Εκτέλεση μετά τη φόρτωση της σελίδας
+        window.addEventListener('load', function() {
+            // Μικρή αναμονή 500ms για σιγουριά
+            setTimeout(startPreview, 500);
+        });
     </script>
 </body>
 </html>

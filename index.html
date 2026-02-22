@@ -54,3 +54,59 @@
                 errorDiv.style.display = 'block';
                 errorDiv.innerHTML = '<strong>⚠️ Προσοχή:</strong> ' + msg;
             }
+
+            // 1. Έλεγχος αν φορτώθηκε η βιβλιοθήκη Box
+            if (typeof Box === 'undefined' || !Box.ContentPreview) {
+                showCustomError("Η βιβλιοθήκη της Box δεν μπόρεσε να φορτωθεί. Ελέγξτε αν έχετε ad-blocker ή αν υπάρχει πρόβλημα με τη σύνδεση στο cdn01.boxcdn.net.");
+                return;
+            }
+
+            // 2. Λήψη παραμέτρων από το URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const fileId = urlParams.get('id');
+            
+            // --- ΡΥΘΜΙΣΗ TOKEN ---
+            // Αντικαταστήστε το 'YOUR_TOKEN' με το Developer Token από το Box Console
+            const accessToken = 'Redcac57CPg17uio497IZhsCMTvDEV8I'; 
+
+            // 3. Βασικοί έλεγχοι πριν την αρχικοποίηση
+            if (!fileId) {
+                showCustomError("Δεν ορίστηκε File ID. Παρακαλώ προσθέστε στο URL: <code>?id=123456789</code>");
+                return;
+            }
+
+            if (accessToken === 'YOUR_TOKEN' || accessToken === '') {
+                showCustomError("Δεν έχει οριστεί το Access Token στον κώδικα. Πηγαίνετε στο Box Developer Console και αντιγράψτε ένα Developer Token.");
+                return;
+            }
+
+            // 4. Δημιουργία και εμφάνιση του Preview
+            try {
+                var contentPreview = new Box.ContentPreview();
+                
+                // Προσθήκη Listener για σφάλματα κατά τη διάρκεια του Preview
+                contentPreview.addListener('error', (error) => {
+                    console.error("Box Preview Error:", error);
+                    if (error.type === 'file_not_found') {
+                        showCustomError("Το αρχείο δεν βρέθηκε. Βεβαιωθείτε ότι το ID <strong>" + fileId + "</strong> είναι σωστό.");
+                    } else if (error.type === 'unauthorized') {
+                        showCustomError("Το Access Token έληξε ή είναι άκυρο. Παρακαλώ ανανεώστε το από το Box Console.");
+                    } else {
+                        showCustomError("Σφάλμα Box: " + error.message);
+                    }
+                });
+
+                // Εκκίνηση προβολής
+                contentPreview.show(fileId, accessToken, {
+                    container: '#preview-container',
+                    showDownload: true,
+                    header: 'light'
+                });
+
+            } catch (err) {
+                showCustomError("Αποτυχία συστήματος: " + err.message);
+            }
+        };
+    </script>
+</body>
+</html>

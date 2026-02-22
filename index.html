@@ -12,32 +12,50 @@
 </head>
 <body>
         ___1___
-</BR>
-    
+</BR>    
     <script>   
          console.log("Hello, World!");
     </script>
-
         ___2___
 
-<div id="preview-container"></div>
-    <script>        
-        // Λειτουργία που "διαβάζει" το id από το URL (π.χ. ?id=12345)
+<div id="error-message"></div>    
+    <div id="preview-container"></div>
+
+    <script>
         const urlParams = new URLSearchParams(window.location.search);
         const fileId = urlParams.get('id');
-        
-        // Εδώ βάζεις το Developer Token σου (για δοκιμή) ή το Access Token
-        const accessToken = 'dvu9tG6rwUQBEj53KKKjC7p7J2663tMi'; 
+        const accessToken = 'dvu9tG6rwUQBEj53KKKjC7p7J2663tMi'; // Μην ξεχάσετε να βάλετε το νέο Developer Token
 
-        if (fileId && accessToken) {
+        const errorDiv = document.getElementById('error-message');
+
+        function showCustomError(msg) {
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '<strong>Σφάλμα:</strong> ' + msg;
+        }
+
+        if (!fileId) {
+            showCustomError("Δεν βρέθηκε File ID στο URL. Προσθέστε το στο τέλος, π.χ. ?id=12345");
+        } else if (accessToken === 'ΤΟ_TOKEN_ΣΑΣ' || accessToken === '') {
+            showCustomError("Το Access Token δεν έχει οριστεί στον κώδικα.");
+        } else {
             var contentPreview = new Box.ContentPreview();
+            
+            // Προσθήκη "Listener" για σφάλματα
+            contentPreview.addListener('error', (error) => {
+                console.error(error);
+                if (error.type === 'file_not_found') {
+                    showCustomError("Το αρχείο δεν βρέθηκε. Ελέγξτε αν το File ID είναι σωστό.");
+                } else if (error.type === 'unauthorized') {
+                    showCustomError("Το Token έχει λήξει ή δεν είναι έγκυρο. Παρακαλώ ανανεώστε το Developer Token στο Box Console.");
+                } else {
+                    showCustomError("Παρουσιάστηκε άγνωστο σφάλμα: " + error.message);
+                }
+            });
+
             contentPreview.show(fileId, accessToken, {
                 container: '#preview-container',
-                showDownload: true,
-                header: 'light'
+                showDownload: true
             });
-        } else {
-            document.body.innerHTML = "<h2>Παρακαλώ δώστε ένα File ID στο URL (π.χ. ?id=12345)</h2>";
         }
     </script>
 

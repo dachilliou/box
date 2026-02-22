@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-        __1__
+        __4__
 </BR>    
 
     
@@ -35,6 +35,10 @@ __2__
 
         const errorDiv = document.getElementById('error-message');
 
+
+document.getElementById("error-message").innerHTML = "<h2>accessToken</h2>";
+
+         
         function showCustomError(msg) {
             errorDiv.style.display = 'block';
             errorDiv.innerHTML = '<strong>Σφάλμα:</strong> ' + msg;

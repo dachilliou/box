@@ -14,6 +14,8 @@
     <div id="preview-container"></div>
 
     <script>
+        
+System.out.println("It works");
         // Λειτουργία που "διαβάζει" το id από το URL (π.χ. ?id=12345)
         const urlParams = new URLSearchParams(window.location.search);
         const fileId = urlParams.get('id');
@@ -31,7 +33,6 @@
         } else {
             document.body.innerHTML = "<h2>Παρακαλώ δώστε ένα File ID στο URL (π.χ. ?id=12345)</h2>";
         }
-System.out.println("It works");
     </script>
 </body>
 </html>

@@ -49,9 +49,10 @@ __2__
         } else if (accessToken === 'ΤΟ_TOKEN_ΣΑΣ' || accessToken === '') {
             showCustomError("Το Access Token δεν έχει οριστεί στον κώδικα.");
         } else {
-            var contentPreview = new Box.ContentPreview();
-           document.getElementById("error-message").innerHTML = accessToken + " | " + fileId + " 3 " ;
-      
+document.getElementById("error-message").innerHTML = accessToken + " | " + fileId + " 3 " ;
+
+             
+            var contentPreview = new Box.ContentPreview();    
             // Προσθήκη "Listener" για σφάλματα
             contentPreview.addListener('error', (error) => {
                 console.error(error);

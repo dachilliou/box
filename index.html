@@ -24,6 +24,12 @@
          <div id="preview-container">pppp</div>
 
     <script>
+
+
+
+
+
+         
      window.onload = function() 
      {
           document.getElementById("error-message").innerHTML = "<h2>__1__</h2>";
@@ -85,7 +91,21 @@
           document.getElementById("error-message").innerHTML = "<h2>__14__</h2>";
              }
          }
-     };         
+     };       
+
+
+
+function showCustomError(msg) {
+     
+          document.getElementById("error-message").innerHTML = "<h2>__1.2__</h2>";
+            errorDiv.style.display = 'block';
+            errorDiv.innerHTML = '<strong>Σφάλμα:</strong> ' + msg;
+     document.getElementById("error-message").innerHTML = "<h2>__1.1__</h2>";
+        }
+
+
+
+         
     </script>
 
 

@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-        __7__
+        __8__
 </BR>    
 
     
@@ -20,69 +20,50 @@
      <script>
      document.getElementById("error-message").innerHTML = "<h2>Hello World</h2>";
      </script>
-     </BR>   
+     </BR>        
+         <div id="preview-container">pppp</div>
 
-
-     
-    <div id="preview-container">pppp</div>
-
-
-__2__
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const fileId = urlParams.get('id');
-        const accessToken = 'dvu9tG6rwUQBEj53KKKjC7p7J2663tMi'; // Μην ξεχάσετε να βάλετε το νέο Developer Token
-
-        const errorDiv = document.getElementById('error-message');
-
-
-          document.getElementById("error-message").innerHTML = accessToken + " | " + fileId;
-
-         
-        function showCustomError(msg) {
-            errorDiv.style.display = 'block';
-            errorDiv.innerHTML = '<strong>Σφάλμα:</strong> ' + msg;
-        }
-
-        if (!fileId) {
-            showCustomError("Δεν βρέθηκε File ID στο URL. Προσθέστε το στο τέλος, π.χ. ?id=12345");
-        } else if (accessToken === 'ΤΟ_TOKEN_ΣΑΣ' || accessToken === '') {
-            showCustomError("Το Access Token δεν έχει οριστεί στον κώδικα.");
-        } else {
-document.getElementById("error-message").innerHTML = accessToken + " | " + fileId + " 3 " ;
-
-             
-            var contentPreview = new Box.ContentPreview();   
-document.getElementById("error-message").innerHTML = accessToken + " | " + fileId + " 5 " ; 
-            // Προσθήκη "Listener" για σφάλματα
-            contentPreview.addListener('error', (error) => {
-                console.error(error);
-                if (error.type === 'file_not_found') {
-                    showCustomError("Το αρχείο δεν βρέθηκε. Ελέγξτε αν το File ID είναι σωστό.");
-                } else if (error.type === 'unauthorized') {
-                    showCustomError("Το Token έχει λήξει ή δεν είναι έγκυρο. Παρακαλώ ανανεώστε το Developer Token στο Box Console.");
-                } else {
-                    showCustomError("Παρουσιάστηκε άγνωστο σφάλμα: " + error.message);
-                }
-            });
-
-document.getElementById("error-message").innerHTML = accessToken + " | " + fileId + " 4 " ;
-
-            contentPreview.show(fileId, accessToken, {
-                container: '#preview-container',
-                showDownload: true
-            });
-
-   
-document.getElementById("error-message").innerHTML = accessToken + " | " + fileId + " 5 " ;
-          
-        }
+     window.onload = function() 
+     {
+         // Έλεγχος αν η βιβλιοθήκη Box φορτώθηκε σωστά
+         if (typeof Box === 'undefined' || !Box.ContentPreview) {
+             showCustomError("Η βιβλιοθήκη της Box δεν φορτώθηκε. Ελέγξτε τη σύνδεσή σας ή τα links στο head.");
+             return;
+         }
+         const urlParams = new URLSearchParams(window.location.search);
+         const fileId = urlParams.get('id');
+         const accessToken = 'dvu9tG6rwUQBEj53KKKjC7p7J2663tMi';
+         const errorDiv = document.getElementById('error-message');
+         if (!fileId) 
+         {
+             showCustomError("Δεν βρέθηκε File ID στο URL.");
+         } 
+         else 
+         {
+             try 
+             {
+                 var contentPreview = new Box.ContentPreview();            
+                 contentPreview.addListener('error', (error) => {
+                     showCustomError("Σφάλμα Box: " + error.message);
+                 });
+                 contentPreview.show(fileId, accessToken, {
+                     container: '#preview-container',
+                     showDownload: true
+                 });
+             } 
+             catch (e) 
+             {
+                 showCustomError("Αποτυχία αρχικοποίησης Previewer: " + e.message);
+             }
+         }
+     };         
     </script>
 
 
    
      
-        ___3___
+        ___9___
 </body>
 </html>
 

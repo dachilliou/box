@@ -29,6 +29,7 @@
           document.getElementById("error-message").innerHTML = "<h2>__1__</h2>";
          // Έλεγχος αν η βιβλιοθήκη Box φορτώθηκε σωστά
          if (typeof Box === 'undefined' || !Box.ContentPreview) {
+          document.getElementById("error-message").innerHTML = "<h2>__1.1__</h2>";
              showCustomError("Η βιβλιοθήκη της Box δεν φορτώθηκε. Ελέγξτε τη σύνδεσή σας ή τα links στο head.");
              return;
          }
